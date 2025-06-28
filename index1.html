@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Glitch Surprise Story</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: black;
+    }
+
+    .container {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+    }
+
+    video {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .glitch-photo {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0;
+      z-index: 10;
+      animation: glitchFlash 8s ease-in-out forwards;
+      animation-delay: 3s;
+    }
+
+    @keyframes glitchFlash {
+      0%, 59% {
+        opacity: 0;
+      }
+      60%, 62% {
+        opacity: 1;
+        transform: scale(1.02) rotate(0.5deg);
+        /* filter: brightness(150%) contrast(150%); */
+      }
+      63%, 65% {
+        transform: scale(1.01) rotate(-0.5deg);
+        opacity: 0.9;
+      }
+      66%, 68% {
+        transform: scale(1.03) rotate(0.2deg);
+        opacity: 1;
+      }
+      69%, 70% {
+        opacity: 0.8;
+      }
+      71%, 100% {
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <video src="friend-video.mp4" autoplay muted loop playsinline></video>
+    <img src="friend-photo.jpeg" class="glitch-photo" alt="Glitch Photo">
+  </div>
+
+  <!-- 🎵 Background Music -->
+  <audio id="bg-music" src="friend-audio.mpeg" preload="auto" loop></audio>
+
+  <script>
+    const bgMusic = document.getElementById("bg-music");
+
+    window.addEventListener("DOMContentLoaded", () => {
+      bgMusic.volume = 1;
+
+      // Try autoplay
+      bgMusic.play().catch(() => {
+        // If autoplay is blocked, try again on user interaction silently
+        const resumeAudio = () => {
+          bgMusic.play().catch(() => {});
+          document.removeEventListener("click", resumeAudio);
+          document.removeEventListener("touchstart", resumeAudio);
+        };
+        document.addEventListener("click", resumeAudio);
+        document.addEventListener("touchstart", resumeAudio);
+      });
+    });
+  </script>
+</body>
+</html>
