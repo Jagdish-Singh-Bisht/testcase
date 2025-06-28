@@ -3,13 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Glitch Surprise Story</title>
+  <title>Birthday Glitch Surprise</title>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
     html, body {
       width: 100%;
       height: 100%;
@@ -53,40 +49,42 @@
       71%, 100% { opacity: 0; }
     }
 
-    #tapToPlay {
+    #tapMessage {
       position: absolute;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
       color: white;
-      font-size: 20px;
-      background: rgba(0, 0, 0, 0.7);
-      padding: 10px 20px;
-      border-radius: 8px;
+      background: rgba(0,0,0,0.7);
+      padding: 12px 24px;
+      border-radius: 10px;
+      font-size: 18px;
       z-index: 100;
     }
   </style>
 </head>
 <body>
-  <div class="container" onclick="startAudio()">
+  <div class="container">
     <video src="friend-video.mp4" autoplay muted loop playsinline></video>
-    <img src="friend-photo.jpeg" class="glitch-photo" alt="Glitch Photo">
-    <div id="tapToPlay">🔊 Tap anywhere to play sound</div>
+    <img src="friend-photo.jpeg" class="glitch-photo" alt="Glitch">
+    <div id="tapMessage">🔊 Tap anywhere to play music</div>
   </div>
 
-  <audio id="bg-music" src="friend-audio.mpeg" loop></audio>
+  <audio id="bg-music" src="friend-audio.mpeg" preload="auto" loop></audio>
 
   <script>
-    const bgMusic = document.getElementById("bg-music");
-    const tapOverlay = document.getElementById("tapToPlay");
+    const music = document.getElementById("bg-music");
+    const msg = document.getElementById("tapMessage");
 
-    function startAudio() {
-      bgMusic.play().then(() => {
-        tapOverlay.style.display = "none";
-      }).catch(err => {
-        console.log("Audio failed:", err);
+    // Wait for user interaction on body
+    document.body.addEventListener("click", () => {
+      music.play().then(() => {
+        msg.style.display = "none";
+      }).catch((err) => {
+        console.log("Music failed to play:", err);
+        msg.innerText = "⚠️ Music can't be played. Try tapping again.";
       });
-    }
+    }, { once: true }); // only runs once
   </script>
 </body>
 </html>
